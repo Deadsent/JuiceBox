@@ -9,14 +9,13 @@ const {
   getAllPosts,
   getPostsByUser,
   createTags,
-  addTagsToPost
+  addTagsToPost,
 } = require("./index");
 
 async function dropTables() {
   try {
     console.log("Starting to drop tables...");
 
-    // have to make sure to drop in correct order
     await client.query(`
       DROP TABLE IF EXISTS post_tags;
       DROP TABLE IF EXISTS tags;
@@ -104,23 +103,27 @@ async function createInitialPosts() {
     const [albert, sandra, glamgal] = await getAllUsers();
 
     console.log("Starting to create posts...");
+
     await createPost({
       authorId: albert.id,
       title: "First Post",
       content:
         "This is my first post. I hope I love writing blogs as much as I love writing them.",
+        tags: ['#happy']
     });
 
     await createPost({
       authorId: sandra.id,
       title: "How does this work?",
       content: "Seriously, does this even do anything?",
+      tags: ['#happy']
     });
 
     await createPost({
       authorId: glamgal.id,
       title: "Living the Glam Life",
       content: "Do you even? I swear that half of you are posing.",
+      tags: ['#happy']
     });
     console.log("Finished creating posts!");
   } catch (error) {
@@ -139,9 +142,9 @@ async function createInitialTags() {
       "#youcandoanything",
       "#catmandoeverything",
     ]);
-
+console.log(happy, sad, "createInit")    
     const [postOne, postTwo, postThree] = await getAllPosts();
-    console.log(postOne, postTwo, postThree, 'Log')
+    console.log(postOne, postTwo, postThree, "Log");
 
     await addTagsToPost(postOne.id, [happy, inspo]);
     await addTagsToPost(postTwo.id, [sad, inspo]);
@@ -161,7 +164,7 @@ async function rebuildDB() {
     await createTables();
     await createInitialUsers();
     await createInitialPosts();
-    await createInitialTags(); // new
+    await createInitialTags();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
