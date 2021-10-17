@@ -69,7 +69,7 @@ async function getAllUsers() {
   }
 }
 
-async function getUserById(userId) {
+async function getUsersById(userId) {
   try {
     const {
       rows: [user],
@@ -97,6 +97,8 @@ async function getUserByUsername(username){
     SELECT * FROM users
     WHERE username=$1
     `, [username])
+
+    return user
   } catch (error) {
     throw error
   }
@@ -352,7 +354,7 @@ module.exports = {
   createUser,
   updateUser,
   getAllUsers,
-  getUserById,
+  getUsersById,
   createPost,
   updatePost,
   getAllPosts,
@@ -360,5 +362,6 @@ module.exports = {
   createTags,
   addTagsToPost,
   getPostsByTagName,
-  getAllTags
+  getAllTags,
+  getUserByUsername
 };
